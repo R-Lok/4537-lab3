@@ -28,15 +28,7 @@ const server = http.createServer(function (req, res) {
     {
         const fileName = req.url.split('/readFile/')[1]
 
-        fs.readFile(fileName, 'utf-8', (err, data) => {
-            if(err) {
-                res.writeHead(err.errno === -2 ? 404:500, {'Content-type': 'text/html'})
-                res.end(err.errno === -2 ? `<p> ${fileName != ''? fileName : 'Resource'} Not Found </p>` : '<p> Internal Server Error </p>')
-            } else {
-                res.writeHead(200, {'Content-type': 'text/plain'})
-                res.end(`${data}`)
-            }
-        })
+        handleRead(req, res, fileName)
     }
     else
     {
@@ -48,5 +40,16 @@ const server = http.createServer(function (req, res) {
 //start listening on server
 server.listen(8000);
 
-
 console.log("Server is running and listening")
+
+function handleRead(req, res, fileName) {
+    fs.readFile(fileName, 'utf-8', (err, data) => {
+        if(err) {
+            res.writeHead(err.errno === -2 ? 404:500, {'Content-type': 'text/html'})
+            res.end(err.errno === -2 ? `<p> ${fileName != ''? fileName : 'Resource'} Not Found </p>` : '<p> Internal Server Error </p>')
+        } else {
+            res.writeHead(200, {'Content-type': 'text/plain'})
+            res.end(`${data}`)
+        }
+    })
+}
