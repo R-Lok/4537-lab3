@@ -3,7 +3,6 @@
 const http = require('http');
 const fs = require('fs')
 const url = require('url')
-const path = require('path')
 
 //import my own modules/localizations
 const dt = require('./modules/utils')
@@ -14,7 +13,7 @@ const server = http.createServer(function (req, res) {
     const reqParams = url.parse(req.url, true)
 
     if(reqParams.pathname === '/COMP4537/labs/3/getDate/') {
-        const str = lang.greetingFormat.replace('%1', reqParams.query.name ? reqParams.query.name : 'Person') + dt.getDate() 
+        const str = lang.greetingFormat.replace('%1', reqParams.query.name ? reqParams.query.name : lang.greetingDefaultName) + dt.getDate() 
         res.writeHead(200, {'Content-type': 'text/html'})
         res.end(`<p style='color: blue;'> ${str} </p>`)
     } 
@@ -33,7 +32,7 @@ const server = http.createServer(function (req, res) {
     else
     {
         res.writeHead(404, {'Content-type': 'text/html'})
-        res.end(`<p> Resource Not Found </p>`)
+        res.end(`<p> ${lang.resourceNotFound} </p>`)
     }
 })
 
@@ -45,7 +44,7 @@ console.log("Server is running and listening")
 function handleWrite(req, res, arg) {
     if (!arg) {
         res.writeHead(400, { 'Content-Type': 'text/html' });
-        res.end('<p>Bad request: Missing required query parameter: "text"</p>');
+        res.end(`<p>${lang.badRequestNoArg} "text"</p>`);
     } else {
         fs.appendFile('file.txt', arg, (err) => {
             if (err) {

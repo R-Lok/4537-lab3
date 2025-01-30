@@ -1,7 +1,9 @@
 
 {
     "greetingFormat": "Hello %1, What a beautiful day, Server current date and time is ",
+    "greetingDefaultName": "Stranger",
     "internalServerError": "Internal Server Error",
     "resourceNotFound": "Resource Not Found",
+    "badRequestNoArg": "Bad request: Missing required query parameter: ",
     "writeOk": "Data appended to file.txt" 
 }
