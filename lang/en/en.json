@@ -1,0 +1,7 @@
+
+{
+    "greetingFormat": "Hello %1, What a beautiful day, Server current date and time is ",
+    "internalServerError": "Internal Server Error",
+    "resourceNotFound": "Resource Not Found",
+    "writeOk": "Data appended to file.txt" 
+}

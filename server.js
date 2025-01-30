@@ -7,7 +7,7 @@ const path = require('path')
 
 //import my own modules/localizations
 const dt = require('./modules/utils')
-const lang = require('./lang/en/en')
+const lang = require('./lang/en/en.json')
 
 //set up server endpoints
 const server = http.createServer(function (req, res) {
@@ -21,7 +21,7 @@ const server = http.createServer(function (req, res) {
 
     else if(reqParams.pathname === '/COMP4537/labs/3/writeFile/') 
     {
-
+        handleWrite(req, res, reqParams.query.text)
     }
     
     else if(reqParams.pathname.includes('/COMP4537/labs/3/readFile/')) 
@@ -42,11 +42,28 @@ server.listen(8000);
 
 console.log("Server is running and listening")
 
+function handleWrite(req, res, arg) {
+    if (!arg) {
+        res.writeHead(400, { 'Content-Type': 'text/html' });
+        res.end('<p>Bad request: Missing required query parameter: "text"</p>');
+    } else {
+        fs.appendFile('file.txt', arg, (err) => {
+            if (err) {
+                res.writeHead(500, {'Content-type': 'text/html'})
+                res.end(`<p> ${lang.internalServerError}`)
+            } else {
+                res.writeHead(200, {'Content-type': 'text/html'})
+                res.end(`<p> ${lang.writeOk} </p>`)
+            }
+        })
+    }
+}
+
 function handleRead(req, res, fileName) {
     fs.readFile(fileName, 'utf-8', (err, data) => {
         if(err) {
             res.writeHead(err.errno === -2 ? 404:500, {'Content-type': 'text/html'})
-            res.end(err.errno === -2 ? `<p> ${fileName != ''? fileName : 'Resource'} Not Found </p>` : '<p> Internal Server Error </p>')
+            res.end(err.errno === -2 ? `<p> ${lang.resourceNotFound}${fileName != ''? ': ' + fileName : ''} ` : `<p> ${lang.internalServerError} </p>`)
         } else {
             res.writeHead(200, {'Content-type': 'text/plain'})
             res.end(`${data}`)
