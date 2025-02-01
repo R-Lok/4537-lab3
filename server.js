@@ -12,18 +12,18 @@ const lang = require('./lang/en/en.json')
 const server = http.createServer(function (req, res) {
     const reqParams = url.parse(req.url, true)
 
-    if(reqParams.pathname === '/COMP4537/labs/3/getDate/') {
+    if(reqParams.pathname === '/l3/getDate/') {
         const str = lang.greetingFormat.replace('%1', reqParams.query.name ? reqParams.query.name : lang.greetingDefaultName) + dt.getDate() 
         res.writeHead(200, {'Content-type': 'text/html'})
         res.end(`<p style='color: blue;'> ${str} </p>`)
     } 
 
-    else if(reqParams.pathname === '/COMP4537/labs/3/writeFile/') 
+    else if(reqParams.pathname === '/l3/writeFile/') 
     {
         handleWrite(req, res, reqParams.query.text)
     }
     
-    else if(reqParams.pathname.includes('/COMP4537/labs/3/readFile/')) 
+    else if(reqParams.pathname.includes('/l3/readFile/')) 
     {
         const fileName = req.url.split('/readFile/')[1]
 
