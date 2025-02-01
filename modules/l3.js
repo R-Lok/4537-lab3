@@ -4,17 +4,20 @@ const fs = require('fs')
 
 function handle_l3(reqParams, req, res) {
 
+    //getDate route
     if(reqParams.pathname === '/l3/getDate/') {
         const str = lang.greetingFormat.replace('%1', reqParams.query.name ? reqParams.query.name : lang.greetingDefaultName) + dt.getDate() 
         res.writeHead(200, {'Content-type': 'text/html'})
         res.end(`<p style='color: blue;'> ${str} </p>`)
     } 
 
+    //writeFile route
     else if(reqParams.pathname === '/l3/writeFile/') 
     {
         handleWrite(req, res, reqParams.query.text)
     }
     
+    //readFile route
     else if(reqParams.pathname.includes('/l3/readFile/')) 
     {
         const fileName = req.url.split('/readFile/')[1]
